@@ -1,0 +1,46 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Pytest - All Tests",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "tests",
+        "-v",
+        "--headed"
+      ],
+      "jinja": true,
+      "justMyCode": true
+    },
+    {
+      "name": "Pytest - Current File",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "${file}",
+        "-v",
+        "--headed"
+      ],
+      "jinja": true,
+      "justMyCode": true
+    },
+    {
+      "name": "Pytest - Debug Mode",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "tests",
+        "-v",
+        "--headed",
+        "-s"
+      ],
+      "console": "integratedTerminal",
+      "jinja": true,
+      "justMyCode": false
+    }
+  ]
+}
