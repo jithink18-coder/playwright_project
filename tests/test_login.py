@@ -21,6 +21,7 @@ def test_login_success(setup_page, base_url,credentials):
     products = ProductsPage(setup_page)
     assert products.is_loaded(), "Products page did not load or expected product not visible"
     logger.info("Test_login_success completed successfully")
+    assert False
     
 def test_login_api(setup_page, base_url,credentials):
     """Test API-based login and verify products page loads."""
