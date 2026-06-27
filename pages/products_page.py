@@ -1,13 +1,17 @@
+import logging
+
 from playwright.sync_api import Page, expect
 
 from pages.base_page import BasePage
+
+logger = logging.getLogger(__name__)
 
 
 class ProductsPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
         self.page = page
-        self.product_cards = page.locator("div.card, div.product, div[class*='product'], div[class*='card']")
+        self.product_cards = page.locator("div.card")
         self.product_titles = page.locator("div.card h5, div.product h5, div.card h4, div.product h4")
         self.add_to_cart_buttons = page.locator("button:has-text('Add To Cart'), button:has-text('Add to cart')")
         self.cart_button = page.locator("button:has-text('Cart'), button:has-text('CART')")
@@ -33,3 +37,21 @@ class ProductsPage(BasePage):
     def go_to_orders(self):
         expect(self.orders_button.first).to_be_visible()
         self.orders_button.first.click()
+
+    def add_product_to_cart_by_name(self, product_name: str):
+        response_message = '{"message":"Product Added To Cart"}'
+        product_card = self.product_cards.filter(has_text=product_name)
+        expect(product_card).to_have_count(1)
+        add_to_cart_button = product_card.locator("button:has-text('Add To Cart'), button:has-text('Add to cart')")
+        with self.page.expect_response(
+            lambda response: response.request.method == "POST"
+            and "/api/ecom/user/add-to-cart" in response.url,
+            timeout=10000,
+        ) as response_info:
+            self.click(add_to_cart_button)
+        assert response_info.value.ok, f"Add to cart request failed with status {response_info.value.status}"
+        logger.info(f"Add to cart request succeeded with status {response_info.value.text()}")
+        
+        assert response_info.value.text() == response_message, f"Unexpected response message: {response_info.value.text()}"
+        logger.info("Product added to cart successfully.")        
+        

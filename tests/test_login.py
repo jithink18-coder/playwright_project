@@ -107,11 +107,7 @@ def test_verify_products_are_added_to_cart(setup_page, base_url, credentials):
 
     products=ProductsPage(setup_page)
     products.is_loaded()
-    adidas_product_locator_list = setup_page.locator("div.card", has=setup_page.locator("h5", has_text="ADIDAS ORIGINAL"))
-    # adidas=adidas_product_locator_list.locator("h5").filter(has_text="ADIDAS ORIGINAL")
-    expect(adidas_product_locator_list).to_have_count(1)
-    adidas_product_locator_list.first.get_by_role("button", name="Add To Cart").click()
-
+    products.add_product_to_cart_by_name("ADIDAS ORIGINAL")
     products.go_to_cart()
     cart=CartPage(setup_page)
     cart.is_loaded()
