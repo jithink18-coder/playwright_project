@@ -2,10 +2,13 @@ import logging
 
 from playwright.sync_api import Page
 
+from pages.base_page import BasePage
+
 logger = logging.getLogger(__name__)
 
-class LoginPage:
+class LoginPage(BasePage):
     def __init__(self, page: Page, base_url: str):
+        super().__init__(page)
         self.page = page
         self.url = base_url
         self.email = page.locator("input#userEmail, input[placeholder='email@example.com'], input[name='userEmail']")
@@ -17,9 +20,9 @@ class LoginPage:
 
     def login(self, email: str, password: str):
         logger.info(f"Attempting to login with email: {email}")
-        self.email.fill(email)
-        self.password.fill(password)
-        self.login_button.click()
+        self.fill(self.email, email)
+        self.fill(self.password, password)
+        self.click(self.login_button)
         logger.info("Login button clicked")
 
     def login_and_wait(self, email: str, password: str, timeout: int = 15000):

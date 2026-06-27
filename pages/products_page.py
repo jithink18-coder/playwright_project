@@ -1,8 +1,11 @@
 from playwright.sync_api import Page, expect
 
+from pages.base_page import BasePage
 
-class ProductsPage:
+
+class ProductsPage(BasePage):
     def __init__(self, page: Page):
+        super().__init__(page)
         self.page = page
         self.product_cards = page.locator("div.card, div.product, div[class*='product'], div[class*='card']")
         self.product_titles = page.locator("div.card h5, div.product h5, div.card h4, div.product h4")
@@ -25,8 +28,7 @@ class ProductsPage:
         return (self.product_titles.first.text_content() or "").strip()
 
     def go_to_cart(self):
-        expect(self.cart_button1.first).to_be_visible()
-        self.cart_button1.first.click()
+        self.click(self.cart_button1.first)
 
     def go_to_orders(self):
         expect(self.orders_button.first).to_be_visible()

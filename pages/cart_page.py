@@ -1,5 +1,6 @@
 from playwright.sync_api import Page, expect
 
+
 class CartPage:
     def __init__(self, page: Page):
         self.page = page
@@ -18,3 +19,11 @@ class CartPage:
     def click_checkout(self):
         expect(self.checkout_button).to_be_visible()
         self.checkout_button.click()
+
+    def get_cart_items(self):
+        return self.page.locator("li.items.even.ng-star-inserted")
+
+    def click_buy_now(self):
+        buy_now_button = self.get_cart_items().get_by_role("button", name="Buy Now")
+        expect(buy_now_button).to_be_visible()
+        buy_now_button.click()
