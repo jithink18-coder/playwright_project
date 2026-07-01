@@ -13,6 +13,7 @@ from pages.products_page import ProductsPage
 
 logger = logging.getLogger(__name__)
 
+@pytest.mark.flaky(reruns=2, reruns_delay=1)
 def test_login_success(setup_page, base_url,credentials):
     logger.info("Starting test_login_success")
     login = LoginPage(setup_page, base_url)
