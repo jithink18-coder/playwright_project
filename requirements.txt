@@ -4,3 +4,4 @@ playwright
 pytest-html
 pytest-xdist
 python-dotenv
+pytest-rerunfailures
