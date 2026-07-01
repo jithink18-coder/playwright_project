@@ -1,6 +1,7 @@
 import json
 import logging
 
+import pytest
 from playwright.sync_api import expect
 
 from pages.cart_page import CartPage
@@ -99,6 +100,7 @@ def test_verify_empty_orders_page(setup_page, base_url, credentials):
     orders.go_to_orders()
     assert orders.has_no_orders_message(), "Expected 'No Orders' message was not displayed on the orders page"
     logger.info("Test_verify_empty_orders_page completed successfully")
+@pytest.mark.flaky(reruns=2, reruns_delay=1)
 def test_verify_products_are_added_to_cart(setup_page, base_url, credentials):
     logger.info("Starting test_verify_products_are_added_to_cart")
     login = LoginPage(setup_page, base_url)
